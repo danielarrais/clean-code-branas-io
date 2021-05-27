@@ -1,8 +1,12 @@
 import CPFValidation from "./CPFValidation";
+import StudentRepository from "./StudentRepository";
 
 export default class EnrollStudent {
-    execute(enrollmentRequest: any) {
-        this.validateEnrollmentRequest(enrollmentRequest)
+    studentRepository: StudentRepository
+
+    constructor() {
+        this.studentRepository = new StudentRepository();
+    }
     }
 
     private validateEnrollmentRequest(enrollmentRequest: any) {
