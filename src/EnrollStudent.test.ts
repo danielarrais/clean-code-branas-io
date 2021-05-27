@@ -1,25 +1,19 @@
 import EnrollStudent from "./EnrollStudent";
+import Student from "./Student";
+import EnrollmentRequest from "./EnrollmentRequest";
 
 test("Should not enroll without valid student name", () => {
     const enrollStudent = new EnrollStudent();
-    const enrollmentRequest = {
-        "student" : {
-            "name" : "Daniel",
-            "cpf" : "06412721380"
-        }
-    }
+    const student = new Student("Daniel", "06412721380");
+    const enrollmentRequest = new EnrollmentRequest(student);
 
     expect(() => enrollStudent.execute(enrollmentRequest)).toThrow(new Error("Invalid student name"))
 })
 
 test("Should not enroll without valid student cpf", () => {
     const enrollStudent = new EnrollStudent();
-    const enrollmentRequest = {
-        "student" : {
-            "name" : "Daniel Arrais",
-            "cpf" : "064.127.213-90"
-        }
-    }
+    const student = new Student("Daniel Arrais", "06412721381");
+    const enrollmentRequest = new EnrollmentRequest(student);
 
     expect(() => enrollStudent.execute(enrollmentRequest)).toThrow(new Error("Invalid student cpf"))
 })
