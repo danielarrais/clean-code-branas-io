@@ -17,3 +17,13 @@ test("Should not enroll without valid student cpf", () => {
 
     expect(() => enrollStudent.execute(enrollmentRequest)).toThrow(new Error("Invalid student cpf"))
 })
+
+test("Should not enroll duplicated student", () => {
+    const enrollStudent = new EnrollStudent();
+    const student = new Student("Daniel Arrais", "06412721380");
+    const enrollmentRequest = new EnrollmentRequest(student);
+
+    enrollStudent.execute(enrollmentRequest)
+
+    expect(() => enrollStudent.execute(enrollmentRequest)).toThrow(new Error("Enrollment with duplicated student is not allowed"))
+})
