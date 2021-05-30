@@ -1,6 +1,6 @@
-import CPFValidation from "./CPFValidation";
-import StudentRepository from "./Student.repository";
-import Student from "./Student";
+import CPFValidation from "./CPF.validation";
+import StudentRepository from "../repository/Student.repository";
+import Student from "../model/Student";
 
 export default class StudentValidation {
     studentRepository: StudentRepository;

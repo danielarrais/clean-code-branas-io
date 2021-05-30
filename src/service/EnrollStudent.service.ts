@@ -1,8 +1,8 @@
-import StudentRepository from "./Student.repository";
-import EnrollmentRequest from "./EnrollmentRequest";
-import StudentValidation from "./Student.validation";
+import StudentRepository from "../repository/Student.repository";
+import EnrollmentRequest from "../model/EnrollmentRequest";
+import StudentValidation from "../validation/Student.validation";
 
-export default class EnrollStudent {
+export default class EnrollStudentService {
     studentRepository: StudentRepository;
     studentValidation: StudentValidation;
 

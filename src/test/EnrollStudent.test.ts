@@ -1,14 +1,14 @@
-import EnrollStudent from "./EnrollStudent";
-import Student from "./Student";
-import EnrollmentRequest from "./EnrollmentRequest";
-import {data} from "./Data";
+import EnrollStudentService from "../service/EnrollStudent.service";
+import Student from "../model/Student";
+import EnrollmentRequest from "../model/EnrollmentRequest";
+import {data} from "../Data";
 
 const LEVEL = data.levels[1];
 const MODULE = data.modules[1];
 const CLASSE = data.classes[0];
 
 test("Should not enroll without valid student name", () => {
-    const enrollStudent = new EnrollStudent();
+    const enrollStudent = new EnrollStudentService();
     const student = new Student("Daniel", "06412721380", new Date());
     const enrollmentRequest = new EnrollmentRequest(student, LEVEL.code, MODULE.code, CLASSE.code);
 
@@ -16,7 +16,7 @@ test("Should not enroll without valid student name", () => {
 })
 
 test("Should not enroll without valid student cpf", () => {
-    const enrollStudent = new EnrollStudent();
+    const enrollStudent = new EnrollStudentService();
     const student = new Student("Daniel Arrais", "06412721381", new Date());
     const enrollmentRequest = new EnrollmentRequest(student, LEVEL.code, MODULE.code, CLASSE.code);
 
@@ -24,7 +24,7 @@ test("Should not enroll without valid student cpf", () => {
 })
 
 test("Should not enroll duplicated student", () => {
-    const enrollStudent = new EnrollStudent();
+    const enrollStudent = new EnrollStudentService();
     const student = new Student("Daniel Arrais", "06412721380", new Date());
     const enrollmentRequest = new EnrollmentRequest(student, LEVEL.code, MODULE.code, CLASSE.code);
 
@@ -34,7 +34,7 @@ test("Should not enroll duplicated student", () => {
 })
 
 test("Should generate enrollment code", () => {
-    const enrollStudent = new EnrollStudent();
+    const enrollStudent = new EnrollStudentService();
     const student = new Student("Daniel Arrais", "06412721380", new Date());
     const enrollmentRequest = new EnrollmentRequest(student, LEVEL.code, MODULE.code, CLASSE.code);
     const enrollNumber = enrollStudent.execute(enrollmentRequest)
