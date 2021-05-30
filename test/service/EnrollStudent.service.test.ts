@@ -1,7 +1,7 @@
-import EnrollStudentService from "../service/EnrollStudent.service";
-import Student from "../model/Student";
-import EnrollmentRequest from "../model/EnrollmentRequest";
-import {data} from "../Data";
+import EnrollStudentService from "../../src/service/EnrollStudent.service";
+import Student from "../../src/model/Student";
+import EnrollmentRequest from "../../src/model/EnrollmentRequest";
+import {data} from "../../src/Data";
 
 const LEVEL = data.levels[1];
 const MODULE = data.modules[1];
