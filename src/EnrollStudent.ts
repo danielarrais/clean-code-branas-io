@@ -1,6 +1,5 @@
 import CPFValidation from "./CPFValidation";
 import StudentRepository from "./StudentRepository";
-import Student from "./Student";
 import EnrollmentRequest from "./EnrollmentRequest";
 
 export default class EnrollStudent {
@@ -10,9 +9,11 @@ export default class EnrollStudent {
         this.studentRepository = new StudentRepository();
     }
 
-    execute(enrollmentRequest: EnrollmentRequest) {
+    execute(enrollmentRequest: EnrollmentRequest): string {
         this.validateEnrollmentRequest(enrollmentRequest);
-        this.enroll(enrollmentRequest.student);
+        this.enroll(enrollmentRequest);
+
+        return enrollmentRequest.student.enrollNumber
     }
 
     private validateEnrollmentRequest(enrollmentRequest: any) {
@@ -39,7 +40,12 @@ export default class EnrollStudent {
         }
     }
 
-    private enroll(student: Student) {
+    private enroll(enrollmentRequest: EnrollmentRequest) {
+        const student = enrollmentRequest.student;
+        const nextSequenceEnrollNumber = this.studentRepository.getNextSequenceEnrollNumber();
+
+        student.enrollNumber = enrollmentRequest.generateEnrollNumber(nextSequenceEnrollNumber);
+
         this.studentRepository.persist(student);
     }
 }
