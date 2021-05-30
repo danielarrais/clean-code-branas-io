@@ -10,4 +10,8 @@ export default class StudentRepository {
     findByCpf(cpf: string): Student | undefined {
         return this.students.find((student) => student.cpf === cpf)
     }
+
+    getNextSequenceEnrollNumber(): string {
+        return `${this.students.length + 1}`;
+    }
 }
