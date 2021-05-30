@@ -17,6 +17,6 @@ export default class EnrollmentRequest {
         const currentYear = new Date().getFullYear();
         const enrollSequencePad = enrollSequence.padStart( 4, "0");
 
-        return `${currentYear}${this.level}${module}${this.classe}${enrollSequencePad}`
+        return `${currentYear}${this.level}${this.module}${this.classe}${enrollSequencePad}`
     }
 }
