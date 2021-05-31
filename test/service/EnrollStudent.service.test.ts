@@ -48,25 +48,13 @@ test("Should generate enrollment code", () => {
 })
 
 test("Should not enroll student below minimum age", () => {
-    const module = getAnyModule();
-    const invalidBirthDate = getInvalidBirthDateForMinimumAge(module.minimumAge);
+    const invalidBirthDate = new Date();
     const student = new Student("Daniel Arrais", "06412721380", invalidBirthDate);
-    const enrollmentRequest = new EnrollmentRequest(student, module.code, LEVEL.code, CLASSE.code);
+    const enrollmentRequest = new EnrollmentRequest(student, getAnyModuleCode(), LEVEL.code, CLASSE.code);
 
     expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Should not enroll student below minimum age"))
 })
 
 const getAnyModuleCode = () => {
-    return getAnyModule().code;
-}
-
-const getAnyModule = () => {
-    return moduleRepository.findAny();
-}
-
-const getInvalidBirthDateForMinimumAge = (minimumAge: number): Date => {
-    const currentYear = new Date().getFullYear();
-    const invalidYear = currentYear - (minimumAge - 1);
-
-    return new Date(invalidYear, 1, 1);
+    return moduleRepository.findAny().code;
 }
