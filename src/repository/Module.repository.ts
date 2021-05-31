@@ -7,9 +7,13 @@ export default class ModuleRepository {
         this.loadModules();
     }
 
-    getMinimumAgeByModuleCode(code: string) {
+    findMinimumAgeByCode(code: string): number | undefined {
         const module = this.modules.find(module => module.code === code);
         return module?.minimumAge;
+    }
+
+    findAny() {
+        return this.modules[Math.floor(Math.random() * this.modules.length)]
     }
 
     loadModules() {
