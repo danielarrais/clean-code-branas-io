@@ -1,6 +1,6 @@
 import EnrollStudentRepository from "./EnrollStudentRepository";
 import EnrollStudent from "../model/EnrollStudent";
-import DataBase from "../DataBase";
+import DataBase from "./data-memory/DataBase";
 
 export default class EnrollStudentRepositoryMemory implements EnrollStudentRepository {
     persist(student: EnrollStudent): void {
@@ -16,6 +16,7 @@ export default class EnrollStudentRepositoryMemory implements EnrollStudentRepos
     }
 
     countByClassroomAndModuleAndLevel(classroom: string, level: string, module: string): number {
+        console.log(DataBase.data.enrollStudents);
         return DataBase.data.enrollStudents.filter((enrollStudent: EnrollStudent) => {
             return enrollStudent.classroom === classroom &&
                 enrollStudent.module == module &&

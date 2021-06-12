@@ -1,6 +1,6 @@
 import Module from "../model/Module";
 import ModuleRepository from "./ModuleRepository";
-import DataBase from "../DataBase";
+import DataBase from "./data-memory/DataBase";
 
 export default class ModuleRepositoryMemory implements ModuleRepository {
     private modules!: Module[];

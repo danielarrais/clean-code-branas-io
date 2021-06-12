@@ -6,7 +6,7 @@ import ClassroomRepository from "../../src/repository/ClassroomRepository";
 import ClassroomRepositoryMemory from "../../src/repository/ClassroomRepositoryMemory";
 import Module from "../../src/model/Module";
 import ModuleRepository from "../../src/repository/ModuleRepository";
-import DataBase from "../../src/DataBase";
+import DataBase from "../../src/repository/data-memory/DataBase";
 
 let classroomRepository: ClassroomRepository;
 let moduleRepository: ModuleRepository;
@@ -20,7 +20,7 @@ beforeEach(() => {
 })
 
 test("Should not enroll without valid student name", () => {
-    const module = getModuleWithClassRoom();
+    const module = getModuleThatHasClassroom();
     const student = new Student("Daniel", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
@@ -28,7 +28,7 @@ test("Should not enroll without valid student name", () => {
 })
 
 test("Should not enroll without valid student cpf", () => {
-    const module = getModuleWithClassRoom();
+    const module = getModuleThatHasClassroom();
     const student = new Student("Daniel Arrais", "06412721381", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
@@ -36,7 +36,7 @@ test("Should not enroll without valid student cpf", () => {
 })
 
 test("Should not enroll duplicated student", () => {
-    const module = getModuleWithClassRoom();
+    const module = getModuleThatHasClassroom();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
@@ -46,7 +46,7 @@ test("Should not enroll duplicated student", () => {
 })
 
 test("Should generate enrollment code", () => {
-    const module = getModuleWithClassRoom();
+    const module = getModuleThatHasClassroom();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
     const enrollNumber = enrollStudentService.execute(enrollmentRequest)
@@ -56,7 +56,7 @@ test("Should generate enrollment code", () => {
 })
 
 test("Should not enroll student below minimum age", () => {
-    const module = getModuleWithClassRoom();
+    const module = getModuleThatHasClassroom();
     const invalidBirthDate = new Date();
     const student = new Student("Daniel Arrais", "33796308023", invalidBirthDate);
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
@@ -65,26 +65,26 @@ test("Should not enroll student below minimum age", () => {
 })
 
 test("Should not enroll student over class capacity", () => {
-    const module = getModuleWithClassRoom();
+    const module = getModuleThatHasClassroom();
 
     getValidStudents().forEach(student => {
         const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
         enrollStudentService.execute(enrollmentRequest);
     })
 
-    const student  = new Student("Thiago Silva", "07905502023", new Date(1975));
+    const student  = new Student("Thiago Silva", "54822460002", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
     expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is over capacity"))
 })
 
-const getModuleWithClassRoom = (): Module => {
+const getModuleThatHasClassroom = (): Module => {
     return moduleRepository.findByCodeAndLevel("1", "EM");
 }
 
 const getValidStudents = (): Student[] => {
     return [
         new Student("Daniel Arrais", "33796308023", new Date(1975)),
-        new Student("Thiago Silva", "07905502023", new Date(1975))
+        new Student("Matheus Costa", "07905502023", new Date(1975))
     ]
 }

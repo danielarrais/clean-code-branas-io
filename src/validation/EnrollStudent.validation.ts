@@ -8,7 +8,7 @@ import CPFValidation from "./CPF.validation";
 import EnrollStudentRepository from "../repository/EnrollStudentRepositoryMemory";
 import EnrollStudentRepositoryMemory from "../repository/EnrollStudentRepositoryMemory";
 
-export default class EnrollmentRequestValidation {
+export default class EnrollStudentValidation {
     private moduleRepository: ModuleRepository;
     private classroomRepository: ClassroomRepository;
     private enrollStudentRepository: EnrollStudentRepository;
@@ -50,7 +50,7 @@ export default class EnrollmentRequestValidation {
     validateCapacityOfClasse(classroom: string, module: string, level: string) {
         const classroomCapacity = this.classroomRepository.findCapacityByCodeAndModuleAndLevel(classroom, level, module)
         const actualNumberOfStudents = this.enrollStudentRepository.countByClassroomAndModuleAndLevel(classroom, level, module)
-
+        console.log(actualNumberOfStudents);
         if (actualNumberOfStudents > classroomCapacity) {
             throw new Error("Class is over capacity")
         }

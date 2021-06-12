@@ -1,8 +1,11 @@
 export default class DataBase {
     private static _data: any;
 
+    private constructor() {
+    }
+
     static resetDataBase() {
-        this._data = DataBase.initialData()
+        this._data = this.initialData()
     }
 
     static get data(): any {
@@ -11,7 +14,6 @@ export default class DataBase {
         }
         return this._data;
     }
-
 
     private static initialData() {
         return {
@@ -121,7 +123,7 @@ export default class DataBase {
                     level: "EM",
                     module: "1",
                     code: "A",
-                    capacity: 10
+                    capacity: 2
                 }
             ]
         }

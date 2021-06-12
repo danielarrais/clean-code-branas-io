@@ -1,6 +1,6 @@
 import Classroom from "../model/ClassRoom";
 import ClassroomRepository from "./ClassroomRepository";
-import DataBase from "../DataBase";
+import DataBase from "./data-memory/DataBase";
 
 export default class ClassroomRepositoryMemory implements ClassroomRepository{
     findCapacityByCodeAndModuleAndLevel(code: string, level: string, module: string): number {
