@@ -4,7 +4,7 @@ import DataBase from "./data-memory/DataBase";
 
 export default class EnrollStudentRepositoryMemory implements EnrollStudentRepository {
     persist(student: EnrollStudent): void {
-        DataBase.data.enrollStudents.push(student)
+        DataBase.data.enrollStudents.push(student);
     }
 
     getNextSequenceEnrollNumber(): string {
@@ -16,11 +16,10 @@ export default class EnrollStudentRepositoryMemory implements EnrollStudentRepos
     }
 
     countBy(classroom: string, level: string, module: string): number {
-        console.log(DataBase.data.enrollStudents);
         return DataBase.data.enrollStudents.filter((enrollStudent: EnrollStudent) => {
             return enrollStudent.classroom === classroom &&
-                enrollStudent.module == module &&
-                enrollStudent.level == level
+                enrollStudent.module === module &&
+                enrollStudent.level === level
         }).length;
     }
 }
