@@ -15,7 +15,7 @@ export default class EnrollStudentRepositoryMemory implements EnrollStudentRepos
         return DataBase.data.enrollStudents.filter((enrollStudent: EnrollStudent) => enrollStudent.student.cpf === cpf).length > 0;
     }
 
-    countByClassroomAndModuleAndLevel(classroom: string, level: string, module: string): number {
+    countBy(classroom: string, level: string, module: string): number {
         console.log(DataBase.data.enrollStudents);
         return DataBase.data.enrollStudents.filter((enrollStudent: EnrollStudent) => {
             return enrollStudent.classroom === classroom &&

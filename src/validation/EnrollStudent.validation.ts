@@ -48,8 +48,8 @@ export default class EnrollStudentValidation {
     }
 
     validateCapacityOfClasse(classroom: string, module: string, level: string) {
-        const classroomCapacity = this.classroomRepository.findCapacityByCodeAndModuleAndLevel(classroom, level, module)
-        const actualNumberOfStudents = this.enrollStudentRepository.countByClassroomAndModuleAndLevel(classroom, level, module)
+        const classroomCapacity = this.classroomRepository.findCapacityBy(classroom, level, module)
+        const actualNumberOfStudents = this.enrollStudentRepository.countBy(classroom, level, module)
         console.log(actualNumberOfStudents);
         if (actualNumberOfStudents > classroomCapacity) {
             throw new Error("Class is over capacity")
@@ -57,7 +57,7 @@ export default class EnrollStudentValidation {
     }
 
     validateMinimumAge(studentBirthDate: Date, muduleCode: string, level: string) {
-        const minimumAgeOfModule = this.moduleRepository.findMinimumAgeByCodeAndLevel(muduleCode, level);
+        const minimumAgeOfModule = this.moduleRepository.findMinimumAgeBy(muduleCode, level);
         const age = DateUtil.calculateAge(studentBirthDate)
 
         if (!minimumAgeOfModule || age < minimumAgeOfModule) {

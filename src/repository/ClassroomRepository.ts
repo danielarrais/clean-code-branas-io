@@ -1,3 +1,3 @@
 export default interface ClassroomRepository {
-    findCapacityByCodeAndModuleAndLevel(code: string, level: string, module: string): number;
+    findCapacityBy(code: string, level: string, module: string): number;
 }

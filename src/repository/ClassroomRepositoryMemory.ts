@@ -3,7 +3,7 @@ import ClassroomRepository from "./ClassroomRepository";
 import DataBase from "./data-memory/DataBase";
 
 export default class ClassroomRepositoryMemory implements ClassroomRepository{
-    findCapacityByCodeAndModuleAndLevel(code: string, level: string, module: string): number {
+    findCapacityBy(code: string, level: string, module: string): number {
         const classroom = DataBase.data.classrooms.find((classroom: Classroom) => {
             return classroom.code === code &&
                 classroom.module == module &&

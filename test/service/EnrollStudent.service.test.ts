@@ -79,7 +79,7 @@ test("Should not enroll student over class capacity", () => {
 })
 
 const getModuleThatHasClassroom = (): Module => {
-    return moduleRepository.findByCodeAndLevel("1", "EM");
+    return moduleRepository.findBy("1", "EM");
 }
 
 const getValidStudents = (): Student[] => {
