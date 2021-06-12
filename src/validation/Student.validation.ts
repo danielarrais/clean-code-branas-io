@@ -1,11 +1,11 @@
 import CPFValidation from "./CPF.validation";
-import StudentRepository from "../repository/Student.repository";
+import StudentRepositoryMemory from "../repository/StudentRepositoryMemory";
 import Student from "../model/Student";
 
 export default class StudentValidation {
-    studentRepository: StudentRepository;
+    studentRepository: StudentRepositoryMemory;
 
-    constructor(studentRepository: StudentRepository) {
+    constructor(studentRepository: StudentRepositoryMemory) {
         this.studentRepository = studentRepository;
     }
 
@@ -16,7 +16,7 @@ export default class StudentValidation {
     }
 
     private validateUnique(cpf: string): void {
-        if (this.studentRepository.findByCpf(cpf)) {
+        if (this.studentRepository.existByCpf(cpf)) {
             throw new Error("Enrollment with duplicated student is not allowed");
         }
     }

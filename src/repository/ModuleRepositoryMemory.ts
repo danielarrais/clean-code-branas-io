@@ -1,15 +1,31 @@
 import Module from "../model/Module";
+import ModuleRepository from "./ModuleRepository";
 
-export default class ModuleRepository {
+export default class ModuleRepositoryMemory implements ModuleRepository {
     private modules!: Module[];
 
     constructor() {
         this.loadModules();
     }
 
-    findMinimumAgeByCode(code: string): number | undefined {
-        const module = this.modules.find(module => module.code === code);
+    findMinimumAgeByCodeAndLevel(code: string, levelCode: string): number {
+        const module = this.findByCodeAndLevel(code, levelCode);
+
+        if (!module) {
+            throw new Error("Module not found!");
+        }
+
         return module?.minimumAge;
+    }
+
+    findByCodeAndLevel(code: string, level: string): Module {
+        const module = this.modules.find(module => module.code === code && module.level == level);
+
+        if (!module) {
+            throw new Error("Module not found!");
+        }
+
+        return module;
     }
 
     findAny() {
