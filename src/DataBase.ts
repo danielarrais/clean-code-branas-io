@@ -7,7 +7,6 @@ export default class DataBase {
 
     static get data(): any {
         if (!this._data) {
-            console.log("iniciou banco")
             this._data = this.initialData()
         }
         return this._data;

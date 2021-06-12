@@ -10,8 +10,6 @@ export default class ClassroomRepositoryMemory implements ClassroomRepository{
                 classroom.level == level
         });
 
-        console.log(code + ' - ' + level + ' - ' + module )
-
         if (!classroom) {
             throw new Error("Classroom not found");
         }

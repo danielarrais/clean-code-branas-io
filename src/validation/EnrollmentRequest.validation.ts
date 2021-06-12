@@ -51,8 +51,6 @@ export default class EnrollmentRequestValidation {
         const classroomCapacity = this.classroomRepository.findCapacityByCodeAndModuleAndLevel(classroom, level, module)
         const actualNumberOfStudents = this.enrollStudentRepository.countByClassroomAndModuleAndLevel(classroom, level, module)
 
-        console.log(actualNumberOfStudents + ' - ' + classroomCapacity);
-
         if (actualNumberOfStudents > classroomCapacity) {
             throw new Error("Class is over capacity")
         }
