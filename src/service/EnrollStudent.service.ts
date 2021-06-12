@@ -1,6 +1,6 @@
 import EnrollStudentRepositoryMemory from "../repository/EnrollStudentRepositoryMemory";
 import EnrollmentRequest from "../dto/EnrollmentRequest";
-import EnrollStudentValidation from "../validation/EnrollmentRequest.validation";
+import EnrollStudentValidation from "../validation/EnrollStudent.validation";
 import EnrollStudent from "../model/EnrollStudent";
 
 export default class EnrollStudentService {
@@ -20,12 +20,7 @@ export default class EnrollStudentService {
     }
 
     private enroll(enrollmentRequest: EnrollmentRequest) {
-        const enrollStudent = new EnrollStudent(
-            enrollmentRequest.student,  
-            enrollmentRequest.level, 
-            enrollmentRequest.module,
-            enrollmentRequest.classroom)
-
+        const enrollStudent = new EnrollStudent(enrollmentRequest)
         const nextSequenceEnrollNumber = this.enrollStudentRepository.getNextSequenceEnrollNumber();
         enrollStudent.generateEnrollNumber(nextSequenceEnrollNumber);
 
