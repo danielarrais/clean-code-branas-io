@@ -1,13 +1,12 @@
 import EnrollStudentService from "../../src/service/EnrollStudent.service";
 import Student from "../../src/model/Student";
-import EnrollmentRequest from "../../src/model/EnrollmentRequest";
+import EnrollmentRequest from "../../src/dto/EnrollmentRequest";
 import {data} from "../../src/Data";
 import ModuleRepositoryMemory from "../../src/repository/ModuleRepositoryMemory";
 import ClassroomRepository from "../../src/repository/ClassroomRepository";
 import ClassroomRepositoryMemory from "../../src/repository/ClassroomRepositoryMemory";
 import Module from "../../src/model/Module";
 
-const LEVEL = data.levels[1];
 const CLASSE = data.classes[0];
 
 let classroomRepository: ClassroomRepository;

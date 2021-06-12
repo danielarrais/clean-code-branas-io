@@ -1,11 +1,11 @@
 import CPFValidation from "./CPF.validation";
-import StudentRepositoryMemory from "../repository/StudentRepositoryMemory";
+import EnrollStudentRepositoryMemory from "../repository/EnrollStudentRepositoryMemory";
 import Student from "../model/Student";
 
 export default class StudentValidation {
-    studentRepository: StudentRepositoryMemory;
+    studentRepository: EnrollStudentRepositoryMemory;
 
-    constructor(studentRepository: StudentRepositoryMemory) {
+    constructor(studentRepository: EnrollStudentRepositoryMemory) {
         this.studentRepository = studentRepository;
     }
 

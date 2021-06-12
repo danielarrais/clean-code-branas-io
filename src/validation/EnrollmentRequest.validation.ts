@@ -1,4 +1,4 @@
-import EnrollmentRequest from "../model/EnrollmentRequest";
+import EnrollmentRequest from "../dto/EnrollmentRequest";
 import DateUtil from "../util/Date.util";
 import ModuleRepositoryMemory from "../repository/ModuleRepositoryMemory";
 import ClassroomRepositoryMemory from "../repository/ClassroomRepositoryMemory";

@@ -1,4 +1,4 @@
-import Student from "./Student";
+import Student from "../model/Student";
 
 export default class EnrollmentRequest {
     student: Student;

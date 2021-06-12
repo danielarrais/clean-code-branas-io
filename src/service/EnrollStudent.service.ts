@@ -1,16 +1,16 @@
-import StudentRepositoryMemory from "../repository/StudentRepositoryMemory";
-import EnrollmentRequest from "../model/EnrollmentRequest";
+import EnrollStudentRepositoryMemory from "../repository/EnrollStudentRepositoryMemory";
+import EnrollmentRequest from "../dto/EnrollmentRequest";
 import StudentValidation from "../validation/Student.validation";
 import EnrollmentRequestValidation from "../validation/EnrollmentRequest.validation";
 
 export default class EnrollStudentService {
-    studentRepository: StudentRepositoryMemory;
+    enrollStudentRepository: EnrollStudentRepositoryMemory;
     studentValidation: StudentValidation;
     enrollmentRequestValidation: EnrollmentRequestValidation;
 
     constructor() {
-        this.studentRepository = new StudentRepositoryMemory();
-        this.studentValidation = new StudentValidation(this.studentRepository);
+        this.enrollStudentRepository = new EnrollStudentRepositoryMemory();
+        this.studentValidation = new StudentValidation(this.enrollStudentRepository);
         this.enrollmentRequestValidation = new EnrollmentRequestValidation();
     }
 
@@ -25,10 +25,10 @@ export default class EnrollStudentService {
 
     private enroll(enrollmentRequest: EnrollmentRequest) {
         const student = enrollmentRequest.student;
-        const nextSequenceEnrollNumber = this.studentRepository.getNextSequenceEnrollNumber();
+        const nextSequenceEnrollNumber = this.enrollStudentRepository.getNextSequenceEnrollNumber();
 
         student.enrollNumber = enrollmentRequest.generateEnrollNumber(nextSequenceEnrollNumber);
 
-        this.studentRepository.persist(student);
+        this.enrollStudentRepository.persist(enrollmentRequest);
     }
 }
