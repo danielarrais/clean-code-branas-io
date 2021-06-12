@@ -1,19 +1,25 @@
-import Student from "../model/Student";
 import EnrollStudentRepository from "./EnrollStudentRepository";
 import EnrollStudent from "../model/EnrollStudent";
+import DataBase from "../DataBase";
 
-export default class EnrollStudentRepositoryMemory implements EnrollStudentRepository{
-    private enrollStudents: EnrollStudent[] = []
-
+export default class EnrollStudentRepositoryMemory implements EnrollStudentRepository {
     persist(student: EnrollStudent): void {
-        this.enrollStudents.push(student)
+        DataBase.data.enrollStudents.push(student)
     }
 
     getNextSequenceEnrollNumber(): string {
-        return `${this.enrollStudents.length + 1}`;
+        return `${DataBase.data.enrollStudents.length + 1}`;
     }
 
     existByCpf(cpf: string): boolean {
-        return this.enrollStudents.some((enrollStudent) => enrollStudent.student.cpf === cpf);
+        return DataBase.data.enrollStudents.filter((enrollStudent: EnrollStudent) => enrollStudent.student.cpf === cpf).length > 0;
+    }
+
+    countByClassroomAndModuleAndLevel(classroom: string, level: string, module: string): number {
+        return DataBase.data.enrollStudents.filter((enrollStudent: EnrollStudent) => {
+            return enrollStudent.classroom === classroom &&
+                enrollStudent.module == module &&
+                enrollStudent.level == level
+        }).length;
     }
 }

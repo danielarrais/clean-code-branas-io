@@ -1,41 +1,21 @@
 import Classroom from "../model/ClassRoom";
 import ClassroomRepository from "./ClassroomRepository";
+import DataBase from "../DataBase";
 
 export default class ClassroomRepositoryMemory implements ClassroomRepository{
-    private classrooms!: Classroom[];
+    findCapacityByCodeAndModuleAndLevel(code: string, level: string, module: string): number {
+        const classroom = DataBase.data.classrooms.find((classroom: Classroom) => {
+            return classroom.code === code &&
+                classroom.module == module &&
+                classroom.level == level
+        });
 
-    constructor() {
-        this.loadClassesRoom();
-    }
+        console.log(code + ' - ' + level + ' - ' + module )
 
-    findByCode(code: string): Classroom  {
-        const classRoom = this.classrooms.find(classroom => classroom.code === code)
-
-        if (!classRoom) {
-            throw new Error("Classroom not found!");
+        if (!classroom) {
+            throw new Error("Classroom not found");
         }
 
-        return classRoom;
-    }
-
-    findCapacityByCode(code: string): number {
-        const module = this.classrooms.find(classroom => classroom.code === code);
-
-        if (!module) {
-            throw new Error("Classroom not found!");
-        }
-
-        return module?.capacity;
-    }
-
-    loadClassesRoom() {
-        this.classrooms = [
-            {
-                level: "EM",
-                module: "3",
-                code: "A",
-                capacity: 2
-            }
-        ]
+        return classroom?.capacity;
     }
 }

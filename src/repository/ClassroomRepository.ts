@@ -1,6 +1,3 @@
-import ClassRoom from "../model/ClassRoom";
-
 export default interface ClassroomRepository {
-    findByCode(code: string): ClassRoom;
-    findCapacityByCode(code: string): number;
+    findCapacityByCodeAndModuleAndLevel(code: string, level: string, module: string): number;
 }
