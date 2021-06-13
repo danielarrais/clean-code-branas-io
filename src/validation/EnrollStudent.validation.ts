@@ -27,6 +27,7 @@ export default class EnrollStudentValidation {
         this.validateUnique(student.cpf);
         this.validateMinimumAge(student.birthDate, enrollmentRequest.module, enrollmentRequest.level);
         this.validateClassroomNotFinished(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
+        this.validateClassroomStarted(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
         this.validateCapacityOfClasse(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
     }
 
@@ -69,8 +70,23 @@ export default class EnrollStudentValidation {
         const endDate = this.classroomRepository.findEndDateBy(classroom, level, module);
         const currentDate = new Date();
 
-         if (currentDate.getTime() > endDate.getTime()) {
-             throw new Error("Class is already finished")
-         }
+        if (currentDate.getTime() > endDate.getTime()) {
+            throw new Error("Class is already finished")
+        }
+    }
+
+    validateClassroomStarted(classroom: string, module: string, level: string): void {
+        const startDate = this.classroomRepository.findStartDateBy(classroom, level, module);
+        const endDate = this.classroomRepository.findEndDateBy(classroom, level, module);
+
+        const everyDayOfTheRange = DateUtil.calculateDaysOfRange(startDate, endDate);
+        const everyDayUntilToday = DateUtil.calculateDaysOfRange(startDate, new Date());
+
+        const percentageOfDaysLost = (100 * everyDayUntilToday) / everyDayOfTheRange;
+        const daysLatePercentageLimit = 25;
+
+        if (percentageOfDaysLost > daysLatePercentageLimit) {
+            throw new Error("Class is already started")
+        }
     }
 }

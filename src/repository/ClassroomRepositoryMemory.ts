@@ -3,8 +3,6 @@ import ClassroomRepository from "./ClassroomRepository";
 import DataBase from "./data-memory/DataBase";
 
 export default class ClassroomRepositoryMemory implements ClassroomRepository{
-
-
     findBy(code: string, level: string, module: string): Classroom {
         const classroom = DataBase.data.classrooms.find((classroom: Classroom) => {
             return classroom.code === code &&
@@ -26,5 +24,9 @@ export default class ClassroomRepositoryMemory implements ClassroomRepository{
 
     findEndDateBy(code: string, level: string, module: string): Date {
         return this.findBy(code, level, module)?.endDate;
+    }
+
+    findStartDateBy(code: string, level: string, module: string): Date {
+        return this.findBy(code, level, module)?.startDate;
     }
 }
