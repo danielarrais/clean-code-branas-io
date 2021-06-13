@@ -78,8 +78,20 @@ test("Should not enroll student over class capacity", () => {
     expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is over capacity"))
 })
 
+test("Should not enroll after que end of the class", () => {
+    const module = getModuleThatHasClassroomFinished();
+    const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
+    const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "B");
+
+    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already finished"))
+})
+
 const getModuleThatHasClassroom = (): Module => {
     return moduleRepository.findBy("1", "EM");
+}
+
+const getModuleThatHasClassroomFinished = (): Module => {
+    return moduleRepository.findBy("3", "EM");
 }
 
 const getValidStudents = (): Student[] => {
