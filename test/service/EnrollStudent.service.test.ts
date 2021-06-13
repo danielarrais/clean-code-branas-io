@@ -20,7 +20,7 @@ beforeEach(() => {
 })
 
 test("Should not enroll without valid student name", () => {
-    const module = getModuleThatHasClassroom();
+    const module = getModuleWithClassroom();
     const student = new Student("Daniel", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
@@ -28,7 +28,7 @@ test("Should not enroll without valid student name", () => {
 })
 
 test("Should not enroll without valid student cpf", () => {
-    const module = getModuleThatHasClassroom();
+    const module = getModuleWithClassroom();
     const student = new Student("Daniel Arrais", "06412721381", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
@@ -36,7 +36,7 @@ test("Should not enroll without valid student cpf", () => {
 })
 
 test("Should not enroll duplicated student", () => {
-    const module = getModuleThatHasClassroom();
+    const module = getModuleWithClassroom();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
 
@@ -46,7 +46,7 @@ test("Should not enroll duplicated student", () => {
 })
 
 test("Should generate enrollment code", () => {
-    const module = getModuleThatHasClassroom();
+    const module = getModuleWithClassroom();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
     const enrollNumber = enrollStudentService.execute(enrollmentRequest)
@@ -56,7 +56,7 @@ test("Should generate enrollment code", () => {
 })
 
 test("Should not enroll student below minimum age", () => {
-    const module = getModuleThatHasClassroom();
+    const module = getModuleWithClassroom();
     const invalidBirthDate = new Date();
     const student = new Student("Daniel Arrais", "33796308023", invalidBirthDate);
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
@@ -65,7 +65,7 @@ test("Should not enroll student below minimum age", () => {
 })
 
 test("Should not enroll student over class capacity", () => {
-    const module = getModuleThatHasClassroom();
+    const module = getModuleWithClassroom();
 
     getValidStudents().forEach(student => {
         const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "A");
@@ -79,18 +79,30 @@ test("Should not enroll student over class capacity", () => {
 })
 
 test("Should not enroll after que end of the class", () => {
-    const module = getModuleThatHasClassroomFinished();
+    const module = getModuleWithClassroomFinished();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "B");
 
     expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already finished"))
 })
 
-const getModuleThatHasClassroom = (): Module => {
+test("Should not enroll after 25% of the start of the class", () => {
+    const module = getModuleWithClassroomStarted();
+    const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
+    const enrollmentRequest = new EnrollmentRequest(student, module.code, module.level, "C");
+
+    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already started"))
+})
+
+const getModuleWithClassroom = (): Module => {
     return moduleRepository.findBy("1", "EM");
 }
 
-const getModuleThatHasClassroomFinished = (): Module => {
+const getModuleWithClassroomFinished = (): Module => {
+    return moduleRepository.findBy("3", "EM");
+}
+
+const getModuleWithClassroomStarted = (): Module => {
     return moduleRepository.findBy("3", "EM");
 }
 
