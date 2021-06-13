@@ -26,6 +26,7 @@ export default class EnrollStudentValidation {
         this.validateName(student.name);
         this.validateUnique(student.cpf);
         this.validateMinimumAge(student.birthDate, enrollmentRequest.module, enrollmentRequest.level);
+        this.validateClassroomNotFinished(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
         this.validateCapacityOfClasse(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
     }
 
@@ -62,5 +63,14 @@ export default class EnrollStudentValidation {
         if (!minimumAgeOfModule || age < minimumAgeOfModule) {
             throw new Error("Should not enroll student below minimum age")
         }
+    }
+
+    validateClassroomNotFinished(classroom: string, module: string, level: string): void {
+        const endDate = this.classroomRepository.findEndDateBy(classroom, level, module);
+        const currentDate = new Date();
+
+         if (currentDate.getTime() > endDate.getTime()) {
+             throw new Error("Class is already finished")
+         }
     }
 }
