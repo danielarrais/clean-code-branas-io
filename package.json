@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "rm -rf ./dist/ && tsc && jest dist/",
+    "test": "tsc && jest dist/",
     "tsc:init": "tsc --init"
   },
   "author": "",
