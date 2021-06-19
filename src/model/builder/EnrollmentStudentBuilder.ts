@@ -2,9 +2,9 @@ import Student from "../Student";
 import Module from "../Module";
 import Classroom from "../Classroom";
 import Invoice from "../Invoice";
-import EnrollStudent from "../EnrollStudent";
+import EnrollmentStudent from "../EnrollmentStudent";
 
-export default class EnrollStudentBuilder {
+export default class EnrollmentStudentBuilder {
     private _student!: Student;
     private _level!: string;
     private _module!: Module;
@@ -15,37 +15,37 @@ export default class EnrollStudentBuilder {
     constructor() {
     }
 
-    student(value: Student): EnrollStudentBuilder {
+    student(value: Student): EnrollmentStudentBuilder {
         this._student = value;
         return this;
     }
 
-    level(value: string): EnrollStudentBuilder {
+    level(value: string): EnrollmentStudentBuilder {
         this._level = value;
         return this;
     }
 
-    module(value: Module): EnrollStudentBuilder {
+    module(value: Module): EnrollmentStudentBuilder {
         this._module = value;
         return this;
     }
 
-    issueDate(value: Date): EnrollStudentBuilder {
+    issueDate(value: Date): EnrollmentStudentBuilder {
         this._issueDate = value;
         return this;
     }
 
-    classroom(value: Classroom): EnrollStudentBuilder {
+    classroom(value: Classroom): EnrollmentStudentBuilder {
         this._classroom = value;
         return this;
     }
 
-    installments(value: number): EnrollStudentBuilder {
+    installments(value: number): EnrollmentStudentBuilder {
         this._installments = value;
         return this;
     }
 
-    public build(): EnrollStudent {
-        return new EnrollStudent(this._student, this._level, this._module, this._classroom, this._issueDate, this._installments);
+    public build(): EnrollmentStudent {
+        return new EnrollmentStudent(this._student, this._level, this._module, this._classroom, this._issueDate, this._installments);
     }
 }

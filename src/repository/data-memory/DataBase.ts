@@ -17,7 +17,7 @@ export default class DataBase {
 
     private static initialData() {
         return {
-            enrollStudents: [],
+            enrollmentStudents: [],
             modules: [
                 {
                     level: "EF1",

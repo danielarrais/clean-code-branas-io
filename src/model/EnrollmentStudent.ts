@@ -2,9 +2,9 @@ import Student from "./Student";
 import Invoice from "./Invoice";
 import Module from "./Module";
 import Classroom from "./Classroom";
-import EnrollStudentBuilder from "./builder/EnrollStudentBuilder";
+import EnrollmentStudentBuilder from "./builder/EnrollmentStudentBuilder";
 
-export default class EnrollStudent {
+export default class EnrollmentStudent {
     student: Student;
     level: string;
     module: Module;
@@ -45,7 +45,14 @@ export default class EnrollStudent {
         this.invoices[this.installments - 1].amount = installmentAmount + rest;
     }
 
+    public getInvoiceBalance(): number {
+        return this.invoices.reduce((total, invoice) => {
+            total += invoice.getBalance();
+            return total;
+        }, 0);
+    }
+
     public static builder() {
-        return new EnrollStudentBuilder();
+        return new EnrollmentStudentBuilder();
     }
 }

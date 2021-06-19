@@ -5,35 +5,35 @@ import ModuleRepositoryMemory from "../repository/ModuleRepositoryMemory";
 import ClassroomRepository from "../repository/ClassroomRepositoryMemory";
 import ClassroomRepositoryMemory from "../repository/ClassroomRepositoryMemory";
 import CPFValidation from "./CPF.validation";
-import EnrollStudentRepository from "../repository/EnrollStudentRepositoryMemory";
-import EnrollStudentRepositoryMemory from "../repository/EnrollStudentRepositoryMemory";
-import EnrollStudent from "../model/EnrollStudent";
+import EnrollmentStudentRepository from "../repository/EnrollmentStudentRepositoryMemory";
+import EnrollmentStudentRepositoryMemory from "../repository/EnrollmentStudentRepositoryMemory";
+import EnrollmentStudent from "../model/EnrollmentStudent";
 
-export default class EnrollStudentValidation {
+export default class EnrollmentStudentValidation {
     private moduleRepository: ModuleRepository;
     private classroomRepository: ClassroomRepository;
-    private enrollStudentRepository: EnrollStudentRepository;
+    private enrollmentStudentRepository: EnrollmentStudentRepository;
 
     constructor() {
         this.moduleRepository = new ModuleRepositoryMemory();
         this.classroomRepository = new ClassroomRepositoryMemory();
-        this.enrollStudentRepository = new EnrollStudentRepositoryMemory();
+        this.enrollmentStudentRepository = new EnrollmentStudentRepositoryMemory();
     }
 
-    public execute(enrollStudent: EnrollStudent): void {
-        const student = enrollStudent.student;
+    public execute(enrollmentStudent: EnrollmentStudent): void {
+        const student = enrollmentStudent.student;
 
         this.validateCPF(student.cpf);
         this.validateName(student.name);
         this.validateUnique(student.cpf);
-        this.validateMinimumAge(student.birthDate, enrollStudent.module.code, enrollStudent.level);
-        this.validateClassroomNotFinished(enrollStudent.classroom.code, enrollStudent.module.code, enrollStudent.level);
-        this.validateClassroomStarted(enrollStudent.classroom.code, enrollStudent.module.code, enrollStudent.level);
-        this.validateCapacityOfClasse(enrollStudent.classroom.code, enrollStudent.module.code, enrollStudent.level);
+        this.validateMinimumAge(student.birthDate, enrollmentStudent.module.code, enrollmentStudent.level);
+        this.validateClassroomNotFinished(enrollmentStudent.classroom.code, enrollmentStudent.module.code, enrollmentStudent.level);
+        this.validateClassroomStarted(enrollmentStudent.classroom.code, enrollmentStudent.module.code, enrollmentStudent.level);
+        this.validateCapacityOfClasse(enrollmentStudent.classroom.code, enrollmentStudent.module.code, enrollmentStudent.level);
     }
 
     private validateUnique(cpf: string): void {
-        if (this.enrollStudentRepository.existByCpf(cpf)) {
+        if (this.enrollmentStudentRepository.existByCpf(cpf)) {
             throw new Error("Enrollment with duplicated student is not allowed");
         }
     }
@@ -52,7 +52,7 @@ export default class EnrollStudentValidation {
 
     validateCapacityOfClasse(classroom: string, module: string, level: string) {
         const classroomCapacity = this.classroomRepository.findCapacityBy(classroom, level, module)
-        const totalEnrollmentInTheClassroom = this.enrollStudentRepository.countBy(classroom, level, module)
+        const totalEnrollmentInTheClassroom = this.enrollmentStudentRepository.countBy(classroom, level, module)
         if (totalEnrollmentInTheClassroom === classroomCapacity) {
             throw new Error("Class is over capacity")
         }

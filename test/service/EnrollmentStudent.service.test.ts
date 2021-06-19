@@ -1,4 +1,4 @@
-import EnrollStudentService from "../../src/service/EnrollStudent.service";
+import EnrollmentStudentService from "../../src/service/EnrollmentStudent.service";
 import Student from "../../src/model/Student";
 import EnrollmentRequest from "../../src/dto/EnrollmentRequest";
 import ModuleRepositoryMemory from "../../src/repository/ModuleRepositoryMemory";
@@ -7,12 +7,12 @@ import ModuleRepository from "../../src/repository/ModuleRepository";
 import DataBase from "../../src/repository/data-memory/DataBase";
 
 let moduleRepository: ModuleRepository;
-let enrollStudentService: EnrollStudentService;
+let enrollmentStudentService: EnrollmentStudentService;
 
 beforeEach(() => {
     DataBase.resetDataBase();
     moduleRepository = new ModuleRepositoryMemory();
-    enrollStudentService = new EnrollStudentService();
+    enrollmentStudentService = new EnrollmentStudentService();
 });
 
 test("Should not enroll without valid student name", () => {
@@ -20,7 +20,7 @@ test("Should not enroll without valid student name", () => {
     const student = new Student("Daniel", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Invalid student name"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Invalid student name"));
 });
 
 test("Should not enroll without valid student cpf", () => {
@@ -28,7 +28,7 @@ test("Should not enroll without valid student cpf", () => {
     const student = new Student("Daniel Arrais", "06412721381", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Invalid student cpf"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Invalid student cpf"));
 });
 
 test("Should not enroll duplicated student", () => {
@@ -36,16 +36,16 @@ test("Should not enroll duplicated student", () => {
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
 
-    enrollStudentService.execute(enrollmentRequest)
+    enrollmentStudentService.execute(enrollmentRequest)
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Enrollment with duplicated student is not allowed"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Enrollment with duplicated student is not allowed"));
 });
 
 test("Should generate enrollment code", () => {
     const module = getModuleWithClassroom();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
-    const enrollNumber = enrollStudentService.execute(enrollmentRequest).student.enrollNumber;
+    const enrollNumber = enrollmentStudentService.execute(enrollmentRequest).student.enrollNumber;
     const expectedEnrollNumber = `2021${module.level}${module.code}A0001`;
 
     expect(enrollNumber).toEqual(expectedEnrollNumber);
@@ -57,7 +57,7 @@ test("Should not enroll student below minimum age", () => {
     const student = new Student("Daniel Arrais", "33796308023", invalidBirthDate);
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Should not enroll student below minimum age"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Should not enroll student below minimum age"));
 });
 
 test("Should not enroll student over class capacity", () => {
@@ -65,13 +65,13 @@ test("Should not enroll student over class capacity", () => {
 
     getValidStudents().forEach(student => {
         const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
-        enrollStudentService.execute(enrollmentRequest);
+        enrollmentStudentService.execute(enrollmentRequest);
     })
 
     const student  = new Student("Thiago Silva", "54822460002", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is over capacity"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is over capacity"));
 });
 
 test("Should not enroll after que end of the class", () => {
@@ -79,7 +79,7 @@ test("Should not enroll after que end of the class", () => {
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "B", 12);
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already finished"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already finished"));
 });
 
 test("Should not enroll after 25% of the start of the class", () => {
@@ -87,20 +87,18 @@ test("Should not enroll after 25% of the start of the class", () => {
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "C", 12);
 
-    expect(() => enrollStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already started"));
+    expect(() => enrollmentStudentService.execute(enrollmentRequest)).toThrow(new Error("Class is already started"));
 });
 
 test("Should generate the invoices based on the number of installments, rounding each amount and applying the rest in the last invoice", () => {
     const module = getModuleWithClassroom();
     const student = new Student("Daniel Arrais", "33796308023", new Date(1975));
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
-    const enrollStudent = enrollStudentService.execute(enrollmentRequest);
-    
-    // console.log(enrollStudent);
+    const enrollmentStudent = enrollmentStudentService.execute(enrollmentRequest);
 
-    expect(enrollStudent.invoices).toHaveLength(12);
-    expect(enrollStudent.invoices[0].amount).toBe(1416.66);
-    expect(enrollStudent.invoices[11].amount).toBe(1416.73);
+    expect(enrollmentStudent.invoices).toHaveLength(12);
+    expect(enrollmentStudent.invoices[0].amount).toBe(1416.66);
+    expect(enrollmentStudent.invoices[11].amount).toBe(1416.73);
 });
 
 const getModuleWithClassroom = (): Module => {
