@@ -7,6 +7,7 @@ import ClassroomRepositoryMemory from "../repository/ClassroomRepositoryMemory";
 import CPFValidation from "./CPF.validation";
 import EnrollStudentRepository from "../repository/EnrollStudentRepositoryMemory";
 import EnrollStudentRepositoryMemory from "../repository/EnrollStudentRepositoryMemory";
+import EnrollStudent from "../model/EnrollStudent";
 
 export default class EnrollStudentValidation {
     private moduleRepository: ModuleRepository;
@@ -19,16 +20,16 @@ export default class EnrollStudentValidation {
         this.enrollStudentRepository = new EnrollStudentRepositoryMemory();
     }
 
-    public execute(enrollmentRequest: EnrollmentRequest): void {
-        const student = enrollmentRequest.student;
+    public execute(enrollStudent: EnrollStudent): void {
+        const student = enrollStudent.student;
 
         this.validateCPF(student.cpf);
         this.validateName(student.name);
         this.validateUnique(student.cpf);
-        this.validateMinimumAge(student.birthDate, enrollmentRequest.module, enrollmentRequest.level);
-        this.validateClassroomNotFinished(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
-        this.validateClassroomStarted(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
-        this.validateCapacityOfClasse(enrollmentRequest.classroom, enrollmentRequest.module, enrollmentRequest.level);
+        this.validateMinimumAge(student.birthDate, enrollStudent.module.code, enrollStudent.level);
+        this.validateClassroomNotFinished(enrollStudent.classroom.code, enrollStudent.module.code, enrollStudent.level);
+        this.validateClassroomStarted(enrollStudent.classroom.code, enrollStudent.module.code, enrollStudent.level);
+        this.validateCapacityOfClasse(enrollStudent.classroom.code, enrollStudent.module.code, enrollStudent.level);
     }
 
     private validateUnique(cpf: string): void {

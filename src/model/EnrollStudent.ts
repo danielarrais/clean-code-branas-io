@@ -1,22 +1,51 @@
 import Student from "./Student";
-import EnrollmentRequest from "../dto/EnrollmentRequest";
+import Invoice from "./Invoice";
+import Module from "./Module";
+import Classroom from "./Classroom";
+import EnrollStudentBuilder from "./builder/EnrollStudentBuilder";
 
 export default class EnrollStudent {
     student: Student;
     level: string;
-    module: string;
-    classroom: string;
+    module: Module;
+    issueDate: Date;
+    classroom: Classroom;
+    invoices: Invoice[];
+    installments: number;
 
-    constructor(enrollmentRequest: EnrollmentRequest) {
-        this.student = enrollmentRequest.student;
-        this.level = enrollmentRequest.level;
-        this.module = enrollmentRequest.module;
-        this.classroom = enrollmentRequest.classroom
+    constructor(student: Student, level: string, module: Module, classroom: Classroom, issueDate: Date, installments: number) {
+        this.student = student;
+        this.level = level;
+        this.module = module;
+        this.classroom = classroom;
+        this.issueDate = issueDate;
+        this.installments = installments;
+        this.invoices = [];
     }
 
     public generateEnrollNumber(enrollSequence: string): void {
-        const currentYear = new Date().getFullYear();
+        const currentYear = this.issueDate.getFullYear();
         const enrollSequencePad = enrollSequence.padStart(4, "0");
-        this.student.enrollNumber = `${currentYear}${this.level}${this.module}${this.classroom}${enrollSequencePad}`;
+        this.student.enrollNumber = `${currentYear}${this.level}${this.module.code}${this.classroom.code}${enrollSequencePad}`;
+    }
+
+    public generateInvoices(): void {
+        let installmentAmount = Math.trunc((this.module.price/this.installments)*100)/100;
+
+        for (let i = 1; i <= this.installments; i++) {
+            this.invoices.push(new Invoice(this.student.enrollNumber, i, this.issueDate.getFullYear(), installmentAmount));
+        }
+
+        const total = this.invoices.reduce((total, invoice) => {
+            total += invoice.amount;
+            return total;
+        }, 0);
+        
+        const rest = Math.trunc((this.module.price - total)*100)/100
+        this.invoices[this.installments - 1].amount = installmentAmount + rest;
+    }
+
+    public static builder() {
+        return new EnrollStudentBuilder();
     }
 }
