@@ -8,7 +8,7 @@ import ClassroomRepositoryMemory from "../repository/ClassroomRepositoryMemory";
 import EnrollmentRequest from "../dto/EnrollmentRequest";
 import EnrollmentStudent from "../model/EnrollmentStudent";
 
-export default class EnrollmentStudentService {
+export default class EnrollStudentService {
     private moduleRepository: ModuleRepository;
     private classroomRepository: ClassroomRepository;
     private enrollmentStudentRepository: EnrollmentStudentRepository;
