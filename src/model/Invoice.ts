@@ -21,4 +21,8 @@ export default class Invoice {
             return total;
         }, this.amount);
     }
+
+    addEvent(paymentEvent: InvoiceEvent) {
+        this.events.push(paymentEvent);
+    }
 }

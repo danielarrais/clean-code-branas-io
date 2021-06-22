@@ -15,7 +15,7 @@ export default class RepositoryMemoryFactory implements RepositoryAbstractFactor
         return new ClassroomRepositoryMemory();
     }
 
-    createEnrollmentRepository(): EnrollmentStudentRepository {
+    createEnrollmentStudentRepository(): EnrollmentStudentRepository {
         return new EnrollmentStudentRepositoryMemory();
     }
 }

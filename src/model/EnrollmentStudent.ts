@@ -3,6 +3,7 @@ import Invoice from "./Invoice";
 import Module from "./Module";
 import Classroom from "./Classroom";
 import EnrollmentStudentBuilder from "./builder/EnrollmentStudentBuilder";
+import InvoiceEvent from "./event/EventInvoice";
 
 export default class EnrollmentStudent {
     student: Student;
@@ -30,7 +31,7 @@ export default class EnrollmentStudent {
     }
 
     public generateInvoices(): void {
-        let installmentAmount = Math.trunc((this.module.price/this.installments)*100)/100;
+        let installmentAmount = Math.trunc((this.module.price / this.installments) * 100) / 100;
 
         for (let i = 1; i <= this.installments; i++) {
             this.invoices.push(new Invoice(this.student.enrollNumber, i, this.issueDate.getFullYear(), installmentAmount));
@@ -40,8 +41,8 @@ export default class EnrollmentStudent {
             total += invoice.amount;
             return total;
         }, 0);
-        
-        const rest = Math.trunc((this.module.price - total)*100)/100
+
+        const rest = Math.trunc((this.module.price - total) * 100) / 100
         this.invoices[this.installments - 1].amount = installmentAmount + rest;
     }
 
@@ -50,6 +51,18 @@ export default class EnrollmentStudent {
             total += invoice.getBalance();
             return total;
         }, 0);
+    }
+
+    getInvoice(month: number, year: number): Invoice | undefined {
+        return this.invoices.find(invoice => invoice.month === month && invoice.year === year);
+    }
+
+    payInvoice(month: number, year: number, amount: number) {
+        const invoice = this.getInvoice(month, year);
+        if (!invoice) throw new Error('invalid invoice!');
+        
+        const paymentEvent = new InvoiceEvent("payment", amount);
+        invoice.addEvent(paymentEvent);
     }
 
     public static builder() {

@@ -1,18 +1,19 @@
-import EnrollmentStudentService from "../../src/service/EnrollmentStudent.service";
+import EnrollStudentService from "../../src/service/EnrollStudent.service";
 import Student from "../../src/model/Student";
 import EnrollmentRequest from "../../src/dto/EnrollmentRequest";
 import ModuleRepositoryMemory from "../../src/repository/ModuleRepositoryMemory";
 import Module from "../../src/model/Module";
 import ModuleRepository from "../../src/repository/ModuleRepository";
 import DataBase from "../../src/repository/data-memory/DataBase";
+import RepositoryMemoryFactory from "../../src/repository/factory/RepositoryMemoryFactory";
 
 let moduleRepository: ModuleRepository;
-let enrollmentStudentService: EnrollmentStudentService;
+let enrollmentStudentService: EnrollStudentService;
 
 beforeEach(() => {
     DataBase.resetDataBase();
     moduleRepository = new ModuleRepositoryMemory();
-    enrollmentStudentService = new EnrollmentStudentService();
+    enrollmentStudentService = new EnrollStudentService(new RepositoryMemoryFactory());
 });
 
 test("Should not enroll without valid student name", () => {

@@ -1,4 +1,4 @@
-import EnrollmentStudentService from "../../src/service/EnrollmentStudent.service";
+import EnrollStudentService from "../../src/service/EnrollStudent.service";
 import Student from "../../src/model/Student";
 import EnrollmentRequest from "../../src/dto/EnrollmentRequest";
 import ModuleRepositoryMemory from "../../src/repository/ModuleRepositoryMemory";
@@ -10,12 +10,12 @@ import RepositoryMemoryFactory from "../../src/repository/factory/RepositoryMemo
 
 let moduleRepository: ModuleRepository;
 let getEnrollmentService: GetEnrollmentService;
-let enrollmentStudentService: EnrollmentStudentService;
+let enrollmentStudentService: EnrollStudentService;
 
 beforeEach(() => {
     DataBase.resetDataBase();
     moduleRepository = new ModuleRepositoryMemory();
-    enrollmentStudentService = new EnrollmentStudentService();
+    enrollmentStudentService = new EnrollStudentService(new RepositoryMemoryFactory());
     getEnrollmentService = new GetEnrollmentService(new RepositoryMemoryFactory());
 });
 
@@ -25,10 +25,10 @@ test("Should get enrollment by code with invoice balance", () => {
     const enrollmentRequest = new EnrollmentRequest(student, new Date(), module.code, module.level, "A", 12);
     const enrollmentStudent = enrollmentStudentService.execute(enrollmentRequest);
 
-    const enrollmentStudentInvoice = getEnrollmentService.execute(enrollmentStudent.student.enrollNumber);
+    const enrollmentBalance = getEnrollmentService.execute(enrollmentStudent.student.enrollNumber);
 
-    expect(enrollmentStudentInvoice.balance).toBe(16999.99);
-    expect(enrollmentStudentInvoice.enrollNumber).toBe(enrollmentStudent.student.enrollNumber);
+    expect(enrollmentBalance.balance).toBe(16999.99);
+    expect(enrollmentBalance.enrollNumber).toBe(enrollmentStudent.student.enrollNumber);
 });
 
 const getModuleWithClassroom = (): Module => {
