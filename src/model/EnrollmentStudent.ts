@@ -4,6 +4,7 @@ import Module from "./Module";
 import Classroom from "./Classroom";
 import EnrollmentStudentBuilder from "./builder/EnrollmentStudentBuilder";
 import InvoiceEvent from "./event/EventInvoice";
+import EnrollmentStatus from "./enum/EnrollmentStatus";
 
 export default class EnrollmentStudent {
     student: Student;
@@ -12,6 +13,7 @@ export default class EnrollmentStudent {
     issueDate: Date;
     classroom: Classroom;
     invoices: Invoice[];
+    status: EnrollmentStatus;
     installments: number;
 
     constructor(student: Student, level: string, module: Module, classroom: Classroom, issueDate: Date, installments: number) {
@@ -22,6 +24,7 @@ export default class EnrollmentStudent {
         this.issueDate = issueDate;
         this.installments = installments;
         this.invoices = [];
+        this.status = EnrollmentStatus.REGISTERED;
     }
 
     public generateEnrollNumber(enrollSequence: string): void {
@@ -60,7 +63,7 @@ export default class EnrollmentStudent {
     payInvoice(month: number, year: number, amount: number) {
         const invoice = this.getInvoice(month, year);
         if (!invoice) throw new Error('invalid invoice!');
-        
+
         const paymentEvent = new InvoiceEvent("payment", amount);
         invoice.addEvent(paymentEvent);
     }

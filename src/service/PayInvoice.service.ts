@@ -1,4 +1,3 @@
-import EnrollmentBalance from "../dto/EnrollmentBalance";
 import PayInvoice from "../dto/PayInvoice";
 import EnrollmentStudentRepository from "../repository/EnrollmentStudentRepository";
 import RepositoryAbstractFactory from "../repository/factory/RepositoryAbstractFactory";
